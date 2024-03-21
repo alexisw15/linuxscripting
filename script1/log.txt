@@ -1,0 +1,43 @@
+Welcome!
+It is currently:
+2024-02-23T13:55:36-04:00
+_____ Kernel Name, Release, Version _____
+Linux DESKTOP-IR27LIK 5.15.133.1-microsoft-standard-WSL2 #1 SMP Thu Oct 5 21:02:42 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+
+_____ Memory usage stats: _____
+               total        used        free      shared  buff/cache   available
+Mem:           7.6Gi       499Mi       6.4Gi       3.0Mi       715Mi       6.9Gi
+Swap:          2.0Gi          0B       2.0Gi
+_____ Disk usage stats: _____
+SOURCE           FSTYPE           SIZE   USED  AVAIL USE% TARGET
+none             tmpfs            3.8G     4K   3.8G   0% /mnt/wsl
+none             9p               460G 224.9G 235.1G  49% /usr/lib/wsl/drivers
+/dev/sdc         ext4          1006.9G   2.2G 953.4G   0% /
+none             tmpfs            3.8G    84K   3.8G   0% /mnt/wslg
+/dev/sdc         ext4          1006.9G   2.2G 953.4G   0% /mnt/wslg/distro
+none             devtmpfs         3.8G      0   3.8G   0% /dev
+none             tmpfs            3.8G   1.3M   3.8G   0% /run
+none             tmpfs            3.8G      0   3.8G   0% /run/lock
+none             tmpfs            3.8G      0   3.8G   0% /run/shm
+none             tmpfs            3.8G      0   3.8G   0% /dev/shm
+none             tmpfs            3.8G    84K   3.8G   0% /run/user
+tmpfs            tmpfs              4M      0     4M   0% /sys/fs/cgroup
+none[/.X11-unix] tmpfs            3.8G    84K   3.8G   0% /tmp/.X11-unix
+drvfs            9p               460G 224.9G 235.1G  49% /mnt/c
+drvfs            9p             931.5G 676.5G   255G  73% /mnt/d
+none[/run/user]  tmpfs            3.8G    84K   3.8G   0% /run/user
+/dev/sdc[/snap]  ext4          1006.9G   2.2G 953.4G   0% /snap
+snapfuse         fuse.snapfuse    128K   128K      0 100% /snap/bare/5
+snapfuse         fuse.snapfuse   74.1M  74.1M      0 100% /snap/core22/1033
+snapfuse         fuse.snapfuse   91.8M  91.8M      0 100% /snap/gtk-common-themes/1535
+snapfuse         fuse.snapfuse   40.9M  40.9M      0 100% /snap/snapd/20290
+snapfuse         fuse.snapfuse   40.5M  40.5M      0 100% /snap/snapd/20671
+snapfuse         fuse.snapfuse    131M   131M      0 100% /snap/ubuntu-desktop-installer/1282
+snapfuse         fuse.snapfuse    131M   131M      0 100% /snap/ubuntu-desktop-installer/1284
+snapfuse         fuse.snapfuse   74.3M  74.3M      0 100% /snap/core22/1122
+_____ Running processes info: _____ 
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         332  0.0  1.1 1066076 88644 ?       Sl   11:44   0:06 /snap/ubuntu-desktop-installer/1284/usr/bin/python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1284/etc/subiquity/postinst.d
+root         136  0.0  0.5 1762368 44968 ?       Ssl  11:43   0:01 /usr/lib/snapd/snapd
+root         431  0.1  0.4  43272 36948 ?        S    11:44   0:08 python3 /snap/ubuntu-desktop-installer/1284/usr/bin/cloud-init status --wait
+root        3786  0.0  0.2 293012 22404 ?        Ssl  13:41   0:00 /usr/libexec/packagekitd
