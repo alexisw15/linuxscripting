@@ -4,27 +4,51 @@ kernel_info() {
     echo "test kernel information"
     uname -a
     sleep 5
+    exec $0
 }
 memory_info() {
     echo "test memory info"
     free -h
     sleep 5
+    exec $0
 }
 storage_info() {
     echo "test storage info"
     findmnt -D
     sleep 5
+    exec $0
 }
 process_info() {
     echo "test processes"
     ps aux --sort -rss | head -n 5
     sleep 5
+    exec $0
 }
 
 connection_test() {
     echo "test connection"
-    ping -c 3 google.com
+    
+    while ! ping -c1 google.com &>/dev/null
+            do echo "fail"
+        done
+        echo "success"
+
     sleep 5
+    exec $0
+}
+network_info(){
+    echo "networking test"
+    hostname
+    hostname -I
+    uptime -p
+    sleep 5
+    exec $0
+
+}
+service_stuff() {
+    echo "Services test"
+    sleep 5
+    exec $0
 }
 exit_button() {
     echo "test exit button"
@@ -107,7 +131,7 @@ function select_option {
 echo "Select one option using up/down keys and enter to confirm:"
 echo
 
-options=("Kernel Info" "Memory Usage" "Storage Usage" "Active Processes" "Extra" "Connection Test" "Exit")
+options=("Kernel Info" "Memory Usage" "Storage Usage" "Active Processes" "Connection Test" "Services" "Network Info" "Exit")
 
 select_option "${options[@]}"
 choice=$?
@@ -121,8 +145,9 @@ case $choice in
     1) memory_info ;;
     2) storage_info ;;
     3) process_info ;;
-    4) extra_info ;;
-    5) connection_test ;;
-    6) exit_button ;;
+    4) connection_test ;;
+    5) service_stuff ;; 
+    6) network_info;;
+    7) exit_button ;;
 esac
 
