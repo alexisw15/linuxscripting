@@ -46,7 +46,13 @@ network_info(){
 
 }
 service_stuff() {
+    #stuff this needs to do: can modify service (stop, start, restart)
+    #
     echo "Services test"
+    systemctl list-units --type=service --all --no-pager
+    echo "type the name of the service you would like to modify:"
+    read input
+    echo "you entered" $input
     sleep 5
     exec $0
 }
@@ -61,7 +67,7 @@ echo "It is currently:"
 #displays current time (in iso standard), useful for logging
 date --iso-8601=seconds
 # Source: https://unix.stackexchange.com/questions/146570/arrow-key-enter-menu
-
+# i thought it was cool B)
 # for wait 5 seconds use command 'sleep 5'
 
 # Renders a text based list of options that can be selected by the
