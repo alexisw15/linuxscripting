@@ -1,5 +1,36 @@
 #!/bin/bash
-{
+# Define functions
+kernel_info() {
+    echo "test kernel information"
+    uname -a
+    sleep 5
+}
+memory_info() {
+    echo "test memory info"
+    free -h
+    sleep 5
+}
+storage_info() {
+    echo "test storage info"
+    findmnt -D
+    sleep 5
+}
+process_info() {
+    echo "test processes"
+    ps aux --sort -rss | head -n 5
+    sleep 5
+}
+
+connection_test() {
+    echo "test connection"
+    ping -c 3 google.com
+    sleep 5
+}
+exit_button() {
+    echo "test exit button"
+    exit
+}
+
 #friendly message :)
 echo "Welcome!"
 echo "It is currently:" 
@@ -72,7 +103,7 @@ function select_option {
 
     return $selected
 }
-{
+
 echo "Select one option using up/down keys and enter to confirm:"
 echo
 
@@ -81,26 +112,17 @@ options=("Kernel Info" "Memory Usage" "Storage Usage" "Active Processes" "Extra"
 select_option "${options[@]}"
 choice=$?
 
-echo "Choosen index = $choice"
+echo "Chosen index = $choice"
 echo "        value = ${options[$choice]}"
 
-}
+# Call the appropriate function based on the user's choice
+case $choice in
+    0) kernel_info ;;
+    1) memory_info ;;
+    2) storage_info ;;
+    3) process_info ;;
+    4) extra_info ;;
+    5) connection_test ;;
+    6) exit_button ;;
+esac
 
-kernel_info() {
-    echo "test kernel information"
-    uname -A
-}
-memory_info() {
-    echo "test memory info"
-}
-storage_info() {
-    echo "test storage info"
-}
-process_info() {
-    echo "test processes"
-}
-exit_button() {
-    echo "test exit button"
-}
-
-}
