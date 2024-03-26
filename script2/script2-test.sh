@@ -1,31 +1,31 @@
 #!/bin/bash
 # Define functions
-kernel_info() {
+kernel_info() { #lists kernel info
     echo "test kernel information"
     uname -a
-    sleep 5
-    exec $0
+    sleep 5 #waits 5 seconds
+    exec $0 #restarts script (back to main menu)
 }
-memory_info() {
+memory_info() { #lists free memory
     echo "test memory info"
     free -h
     sleep 5
     exec $0
 }
-storage_info() {
+storage_info() { #this lists all disks (looks weird on WSL, less weird on real hardware)
     echo "test storage info"
     findmnt -D
     sleep 5
     exec $0
 }
-process_info() {
+process_info() { #this lists the top 5 processes
     echo "test processes"
     ps aux --sort -rss | head -n 5
     sleep 5
     exec $0
 }
 
-connection_test() {
+connection_test() { #this pings google.com (sending the output of ping to the shadow realm) then prints either success or fail based on if the command succeeds or not
     echo "test connection"
     
     while ! ping -c1 google.com &>/dev/null
@@ -37,7 +37,7 @@ connection_test() {
     exec $0
 }
 network_info(){
-    echo "networking test"
+    echo "networking test" #this prints out just the required information (hostname, ip, and uptime)
     hostname
     hostname -I
     uptime -p
@@ -50,9 +50,11 @@ service_stuff() {
     #
     echo "Services test"
     systemctl list-units --type=service --all --no-pager
-    echo "type the name of the service you would like to modify:"
+    echo "what would you like to do: 1. stop a service 2. start a service 3. restart a service"
     read input
-    echo "you entered" $input
+    echo "you entered" $input #check this for the number figure that out
+    echo "enter the service you would like to change" #they have to type a service name
+    #execute the chosen action on the chosen service
     sleep 5
     exec $0
 }
@@ -77,7 +79,7 @@ date --iso-8601=seconds
 #                 "opt1" "opt2" ...
 #   Return value: selected index (0 for opt1, 1 for opt2 ...)
 function select_option {
-
+    # this section controls the arrow key input
     # little helpers for terminal print control and key input
     ESC=$( printf "\033")
     cursor_blink_on()  { printf "$ESC[?25h"; }
