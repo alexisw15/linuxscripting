@@ -28,12 +28,12 @@ process_info() { #this lists the top 5 processes
 }
 
 connection_test() { #this pings google.com then prints either success or fail based on if the command succeeds or not
-    echo "test connection"
+    echo "Connection test:"
     
     while ! ping -c1 google.com &>/dev/null #ping google.com once, send output to shadow realm (/dev/null)
-            do echo "fail" #if ping not successful or some other error print fail
+            do echo "fail!" #if ping not successful or some other error print fail #ok turns out if you dont have internet it spams FAIL over and over which is very funny
         done
-        echo "success" #print success if ping goes through
+        echo "success!" #print success if ping goes through
 
     sleep 5
     exec $0
