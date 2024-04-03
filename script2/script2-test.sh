@@ -2,45 +2,47 @@
 # Define functions
 kernel_info() { #lists kernel info
     echo "test kernel information"
-    uname -a
+    uname -a #uname prints information about kernel and OS -a means print all information
     sleep 5 #waits 5 seconds
     exec $0 #restarts script (back to main menu)
 }
 memory_info() { #lists free memory
     echo "test memory info"
-    free -h
+    free -h #free displays total free/used memory -h means "human" format (shortest three digit number)
     sleep 5
     exec $0
 }
 storage_info() { #this lists all disks (looks weird on WSL, less weird on real hardware)
     echo "test storage info"
-    findmnt -D
+    findmnt -D #need to figure out what -D means it's not clear on the man page
     sleep 5
     exec $0
 }
 process_info() { #this lists the top 5 processes
     echo "test processes"
-    ps aux --sort -rss | head -n 5
+    ps aux --sort -rss | head -n 5 #a = processes for all users u= show process owner x= show processes not attached to a terminal 
+                                    # -rss resident set size, how much memory a process has used in kb
+                                    # pipe to head -n 5 displays only the top 5 results, cuts off the rest of the result.
     sleep 5
     exec $0
 }
 
-connection_test() { #this pings google.com (sending the output of ping to the shadow realm) then prints either success or fail based on if the command succeeds or not
+connection_test() { #this pings google.com then prints either success or fail based on if the command succeeds or not
     echo "test connection"
     
-    while ! ping -c1 google.com &>/dev/null
-            do echo "fail"
+    while ! ping -c1 google.com &>/dev/null #ping google.com once, send output to shadow realm (/dev/null)
+            do echo "fail" #if ping not successful or some other error print fail
         done
-        echo "success"
+        echo "success" #print success if ping goes through
 
     sleep 5
     exec $0
 }
 network_info(){
     echo "networking test" #this prints out just the required information (hostname, ip, and uptime)
-    hostname
-    hostname -I
-    uptime -p
+    hostname #displays hostname
+    hostname -I #-I displays IP address
+    uptime -p #shows uptime, -p for "pretty" format
     sleep 5
     exec $0
 
@@ -49,12 +51,42 @@ service_stuff() {
     #stuff this needs to do: can modify service (stop, start, restart)
     #
     echo "Services test"
-    systemctl list-units --type=service --all --no-pager
-    echo "what would you like to do: 1. stop a service 2. start a service 3. restart a service"
-    read input
-    echo "you entered" $input #check this for the number figure that out
+    systemctl list-units --type=service --all --no-pager #list units - displays everything that systemd has loaded in memory 
+                                                        #--type=service - filters the result to only services
+                                                        # --all -shows all seervices, even stopped/inactive ones
+                                                        # -- no-pager - does not use a pager (ie, display all results at once, not in pages)
     echo "enter the service you would like to change" #they have to type a service name
+    read servicename #stores what they typed in servicename
+    echo "you chose $servicename" 
+    
+    echo "what would you like to do:" 
+    echo "1. stop a service" 
+    echo "2. start a service" 
+    echo "3. restart a service"
+    
+    read n
+    case $n in
+    1) echo "stopping service $servicename ...."
+        systemctl stop $servicename #stops the given service
+        sleep 5
+    ;;
+    2) echo "starting service $servicename ...."
+        systemctl start $servicename #starts the given service
+        sleep 5
+    ;;
+    3) echo "restarting service $servicename"
+        systemctl restart $servicename #restarts the service
+        sleep 5
+    ;;
+    *) echo "invalid option"
+        sleep 5
+    ;;
+    esac
+    
     #execute the chosen action on the chosen service
+
+
+
     sleep 5
     exec $0
 }
@@ -69,9 +101,7 @@ echo "It is currently:"
 #displays current time (in iso standard), useful for logging
 date --iso-8601=seconds
 # Source: https://unix.stackexchange.com/questions/146570/arrow-key-enter-menu
-# i thought it was cool B)
 # for wait 5 seconds use command 'sleep 5'
-
 # Renders a text based list of options that can be selected by the
 # user using up, down and enter keys and returns the chosen option.
 #
@@ -144,8 +174,8 @@ options=("Kernel Info" "Memory Usage" "Storage Usage" "Active Processes" "Connec
 select_option "${options[@]}"
 choice=$?
 
-echo "Chosen index = $choice"
-echo "        value = ${options[$choice]}"
+#echo "Chosen index = $choice"
+#echo "        value = ${options[$choice]}"
 
 # Call the appropriate function based on the user's choice
 case $choice in
