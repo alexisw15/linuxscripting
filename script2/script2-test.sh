@@ -12,13 +12,13 @@ memory_info() { #lists free memory
     sleep 5
     exec $0
 }
-storage_info() { #this lists all disks (looks weird on WSL, less weird on real hardware)
+storage_info() { #this lists all disks (looks weird on WSL due to lots of file systems, looks normal on regular linux distros)
     echo "test storage info"
-    findmnt -D #need to figure out what -D means it's not clear on the man page
+    findmnt -D   #findmnt lists file systems -D option imitates the output of df, meaning that you get nice looking columns with the information we need
     sleep 5
     exec $0
 }
-process_info() { #this lists the top 5 processes
+process_info() {                    #this lists the top 5 processes
     echo "test processes"
     ps aux --sort -rss | head -n 5 #a = processes for all users u= show process owner x= show processes not attached to a terminal 
                                     # -rss resident set size, how much memory a process has used in kb
@@ -29,17 +29,18 @@ process_info() { #this lists the top 5 processes
 
 connection_test() { #this pings google.com then prints either success or fail based on if the command succeeds or not
     echo "Connection test:"
-    
-    while ! ping -c1 google.com &>/dev/null #ping google.com once, send output to shadow realm (/dev/null)
-            do echo "fail!" #if ping not successful or some other error print fail #ok turns out if you dont have internet it spams FAIL over and over which is very funny
-        done
-        echo "success!" #print success if ping goes through
-
+    #ping google.com once, send output to shadow realm (/dev/null)
+    if ! ping -c 1 google.com &>/dev/null; then
+        echo "Connection failed!"
+        # Print failed only if the connection fails 
+    else
+        echo "Connection successful!" #print success only if ping successful
     sleep 5
     exec $0
+    fi
 }
 network_info(){
-    echo "networking test" #this prints out just the required information (hostname, ip, and uptime)
+    echo "Network Information:" #this prints out just the required information (hostname, ip, and uptime)
     hostname #displays hostname
     hostname -I #-I displays IP address
     uptime -p #shows uptime, -p for "pretty" format
@@ -50,12 +51,12 @@ network_info(){
 service_stuff() {
     #stuff this needs to do: can modify service (stop, start, restart)
     #
-    echo "Services test"
+    echo "Services: (may need sudo)"
     systemctl list-units --type=service --all --no-pager #list units - displays everything that systemd has loaded in memory 
                                                         #--type=service - filters the result to only services
                                                         # --all -shows all seervices, even stopped/inactive ones
                                                         # -- no-pager - does not use a pager (ie, display all results at once, not in pages)
-    echo "enter the service you would like to change" #they have to type a service name
+    echo "enter the name of the service you would like to change" #they have to type a service name
     read servicename #stores what they typed in servicename
     echo "you chose $servicename" 
     
@@ -98,7 +99,7 @@ exit_button() {
 #friendly message :)
 echo "Welcome!"
 echo "It is currently:" 
-#displays current time (in iso standard), useful for logging
+#displays current time (in iso standard)
 date --iso-8601=seconds
 # Source: https://unix.stackexchange.com/questions/146570/arrow-key-enter-menu
 # for wait 5 seconds use command 'sleep 5'
@@ -166,10 +167,10 @@ function select_option {
     return $selected
 }
 
-echo "Select one option using up/down keys and enter to confirm:"
+echo "Select an option using up/down arrow keys and enter to confirm:"
 echo
 
-options=("Kernel Info" "Memory Usage" "Storage Usage" "Active Processes" "Connection Test" "Services" "Network Info" "Exit")
+options=("Kernel Info" "Memory Usage" "Storage Usage" "Active Processes" "Connection Test" "Services (may need sudo)" "Network Info" "Exit")
 
 select_option "${options[@]}"
 choice=$?
