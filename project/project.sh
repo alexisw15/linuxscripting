@@ -28,10 +28,10 @@ while true; do
         1)
             echo "Choose backup location (e.g., /home/user/backups):"
             while true; do
-                read -p "Enter path: " backup_location
-                # Validate user input (optional)
-                if [[ -d "$backup_location" ]]; then
-                    echo "Backup location set to: $backup_location"
+                read -p "Enter path: " backup_location #reads user input, in this case a path to a directory
+                # Validate user input
+                if [[ -d "$backup_location" ]]; then #checks if location entered by user is a valid directory
+                    echo "Backup location set to: $backup_location" #uses location variable to confirm to the user the location they entered
                     break
                 else
                     echo "Error: Invalid directory. Please choose a valid path."
@@ -39,8 +39,12 @@ while true; do
             done
             ;;
         2)
-            echo "Choose compression options (e.g., tar.gz, zip)"
-            # Add logic to prompt for and store the compression option
+            read -p "Compress files (y/N)? "
+            case "$compress_choice" in
+            [Yy]) compress=true;;
+            *) compress=false;;
+            esac
+            echo "you chose $compress_choice"
             ;;
         3)
             # Add logic to perform the backup using the chosen location and compression
