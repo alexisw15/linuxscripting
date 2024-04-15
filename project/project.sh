@@ -9,7 +9,7 @@ echo "Welcome to the file backup utility"
 while true; do
     echo "Please choose an option:"
     echo "1) Choose backup location"
-    echo "2) Choose compression options"
+    echo "2) choose backup path"
     echo "3) Start backup"
     echo "4) Exit"
     read -r -p "Enter your choice: " choice
@@ -29,12 +29,17 @@ while true; do
             done
             ;;
         2)
-            read -r -p "Compress files (y/N)? "
-            case "$compress_choice" in
-            [Yy]) compress_choice=1;;
-            [Nn]) compress_choice=0;;
-            esac
-            echo "you chose $compress_choice"
+            echo "choose path/directory that you want to be backed up: e.g. /home/yourname/Downloads"
+            while true; do
+                read -r -p "Enter path: " backup_path
+                if [[ -d "$backup_path" ]]; then
+                    echo "Path chosen to back up: $backup_path"
+                    break
+                else
+                    echo "Error: not a directory, choose a valid directory"
+                fi
+            done
+
             ;;
         3)
 
@@ -42,17 +47,11 @@ while true; do
             
             echo "Starting backup..."
             
-            cp -r "/home/$USER" "/$backup_location/backup" #cp -r copies files recursively ie all files in a directory, files within those directories
+            #cp -r "/home/$USER/Downloads" "/$backup_location/backup" #cp -r copies files recursively ie all files in a directory, files within those directories
             
-            tar -cvzf backupCompressed "/$backup_location/backup" #tar stores files in an archive -v verbose, show output -z compress with gzip -f specifies file name
+            tar -czvf "$backup_location/backup-$(date +%F).tar.gz" "$backup_path"
 
-
-            
-            
             sleep 5
-            
-            
-            
             
             
             echo "Backup completed."
