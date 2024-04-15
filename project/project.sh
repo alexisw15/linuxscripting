@@ -8,8 +8,8 @@ echo "Welcome to the file backup utility"
 
 while true; do
     echo "Please choose an option:"
-    echo "1) Choose backup location"
-    echo "2) choose backup path"
+    echo "1) Choose backup location (Where it's going)"
+    echo "2) choose backup path (Where it's coming from)" #could be phrased better
     echo "3) Start backup"
     echo "4) Exit"
     read -r -p "Enter your choice: " choice
@@ -17,7 +17,7 @@ while true; do
     case $choice in
         1)
             echo "Choose backup location (e.g., /backups/, anywhere not your home directory) (backup directory will be created in this path)"
-            while true; do
+            while true; do #creates a loop, so if the user enters a bad path they get to try again, and the bad path isn't stored
                 read -r -p "Enter path: " backup_location #reads user input, in this case a path to a directory
                 # Validate user input
                 if [[ -d "$backup_location" ]]; then #checks if location entered by user is a valid directory
@@ -28,7 +28,7 @@ while true; do
                 fi
             done
             ;;
-        2)
+        2) 
             echo "choose path/directory that you want to be backed up: e.g. /home/yourname/Downloads"
             while true; do
                 read -r -p "Enter path: " backup_path
@@ -39,7 +39,7 @@ while true; do
                     echo "Error: not a directory, choose a valid directory"
                 fi
             done
-
+            #this code is really similar to the first part, since all we're doing is storing two paths
             ;;
         3)
 
