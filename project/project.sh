@@ -1,11 +1,6 @@
 #!/bin/bash
 
-#put functions here
-
-
-
-
-
+#put functions here if you make any
 
 
 
@@ -26,7 +21,7 @@ while true; do
 
     case $choice in
         1)
-            echo "Choose backup location (e.g., /home/user/backups):"
+            echo "Choose backup location (e.g., /backups/, anywhere not your home directory) (backup directory will be created in this path)"
             while true; do
                 read -p "Enter path: " backup_location #reads user input, in this case a path to a directory
                 # Validate user input
@@ -41,16 +36,23 @@ while true; do
         2)
             read -p "Compress files (y/N)? "
             case "$compress_choice" in
-            [Yy]) compress=true;;
-            *) compress=false;;
+            [Yy]) compress_choice=true;;
+            [Nn]) compress_choice=false;;
             esac
             echo "you chose $compress_choice"
             ;;
         3)
-            # Add logic to perform the backup using the chosen location and compression
+
+            mkdir "$backup_location/backup"
+
+            cp -r "/home/$USER" "/$backup_location/backup"
+            
+            sleep 5
+            
+            
+            
             echo "Starting backup..."
-            # Simulating backup process
-            sleep 2
+            
             echo "Backup completed."
             ;;
         4)
