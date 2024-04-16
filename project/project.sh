@@ -11,7 +11,8 @@ while true; do
     echo "1) Choose backup location (Where it's going)"
     echo "2) choose backup path (Where it's coming from)" #could be phrased better
     echo "3) Start backup"
-    echo "4) Exit"
+    echo "4) Restore from backup"
+    echo "5) Exit"
     read -r -p "Enter your choice: " choice
 
     case $choice in
@@ -39,24 +40,49 @@ while true; do
                     echo "Error: not a directory, choose a valid directory"
                 fi
             done
-            #this code is really similar to the first part, since all we're doing is storing two paths
+            #this code is really similar to the first part, since all we're doing is storing two paths, just in different variables
             ;;
         3)
 
-            mkdir "$backup_location/backup" #create target directory
+            mkdir "$backup_location/backup" #create target directory (doesnt rly work)
             
             echo "Starting backup..."
             
             #cp -r "/home/$USER/Downloads" "/$backup_location/backup" #cp -r copies files recursively ie all files in a directory, files within those directories
             
-            tar -czvf "$backup_location/backup-$(date +%F).tar.gz" "$backup_path"
-
+            tar -czvf "$backup_location/backup-$(date +%F).tar.gz" "$backup_path" 
+            #tar creates archive files -c creates an archive -z uses gzip to compress -v for verbose, showing output in terminal, -f lets us specify file name
             sleep 5
             
             
             echo "Backup completed."
             ;;
+        
         4)
+
+            echo "Would you like to restore files from a backup?"
+
+            while true; do
+                read -r -p "Enter path to archive: " restore_path
+                if [[ "$restore_path" ]]; then
+                    echo "File chosen to restore: $restore_path"
+                    break
+                else
+                    echo "Error: not a directory, choose a valid directory"
+                fi
+            done
+            #create directory for restored files
+            restore_name=$(basename "$restore_path" .tar.gz) #basename strips path and extentions from file
+            restore_dir="$restore_name-Restored" #store name of new directory
+            echo "$restore_dir" #testing
+            mkdir "$restore_dir" #creates new directory with "Restored" added at the end
+            tar -xvf "$restore_path" -C "$restore_dir" #unpacks contents of user specified archive into newly created directory
+
+
+
+
+            ;;
+        5)
             echo "Goodbye"
             exit 0
             ;;
