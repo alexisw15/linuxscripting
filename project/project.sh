@@ -1,15 +1,18 @@
 #!/bin/bash
 
-#put functions here if you make any
-
+#colours
+GREEN='033[0;32m'
+RED='033[0;31m'
+BLUE='033[0;34m'
+RESET='\033[0m'
 
 
 echo "Welcome to the file backup utility"
 
 while true; do
     echo "Please choose an option:"
-    echo "1) Choose backup location (Where it's going)"
-    echo "2) choose backup path (Where it's coming from)" #could be phrased better
+    echo "1) Choose backup location (Where archive will be stored)"
+    echo "2) choose backup path (What files are being backed up)" #could be phrased better
     echo "3) Start backup"
     echo "4) Restore from backup"
     echo "5) Exit"
@@ -25,7 +28,7 @@ while true; do
                     echo "Backup location set to: $backup_location" #uses location variable to confirm to the user the location they entered
                     break
                 else
-                    echo "Error: Invalid directory. Please choose a valid path."
+                    echo "Error: not a directory, choose a valid directory"
                 fi
             done
             ;;
@@ -56,28 +59,38 @@ while true; do
             
             
             echo "Backup completed."
+            
             ;;
         
         4)
 
-            echo "Would you like to restore files from a backup?"
+            echo "Which archive would you like to restore?"
 
             while true; do
                 read -r -p "Enter path to archive: " restore_path
-                if [[ "$restore_path" ]]; then
+                if [[ -f "$restore_path" ]]; then #checks if given path leads to a real file or not, if not a real file, loop until user enters a real file or quits
                     echo "File chosen to restore: $restore_path"
                     break
                 else
-                    echo "Error: not a directory, choose a valid directory"
+                    echo "Error: not a file or archive, choose a valid archive"
                 fi
             done
+            
+            echo "Unpacking...."
+            sleep 1
             #create directory for restored files
+            
             restore_name=$(basename "$restore_path" .tar.gz) #basename strips path and extentions from file
+            
             restore_dir="$restore_name-Restored" #store name of new directory
+            
             echo "$restore_dir" #testing
+            
             mkdir "$restore_dir" #creates new directory with "Restored" added at the end
-            tar -xvf "$restore_path" -C "$restore_dir" #unpacks contents of user specified archive into newly created directory
+            
+            tar -xf "$restore_path" -C "$restore_dir" #unpacks contents of user specified archive into newly created directory
 
+            echo "Files extracted! (look inside this script's directory...)"
 
 
 
@@ -85,6 +98,7 @@ while true; do
         5)
             echo "Goodbye"
             exit 0
+            
             ;;
         *)
             echo "Invalid option. Please choose 1-4."
