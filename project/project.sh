@@ -1,22 +1,16 @@
 #!/bin/bash
 
-#colours
-GREEN='033[0;32m'
-RED='033[0;31m'
-BLUE='033[0;34m'
-RESET='\033[0m'
 
-
-echo "Welcome to the file backup utility"
+echo "Welcome to the (as yet unnamed) file backup utility!"
 
 while true; do
     echo "Please choose an option:"
-    echo "1) Choose backup location (Where archive will be stored)"
-    echo "2) choose backup path (What files are being backed up)" #could be phrased better
+    echo "1) Choose backup location (Where archive will be stored)" #these two options are a little confusing but its not the end of the world
+    echo "2) Choose backup path (What files are being backed up)" #could be phrased better, 
     echo "3) Start backup"
     echo "4) Restore from backup"
     echo "5) Exit"
-    read -r -p "Enter your choice: " choice
+    read -r -p "Enter your choice: " choice #lets the user input which menu item they want
 
     case $choice in
         1)
@@ -52,10 +46,10 @@ while true; do
             echo "Starting backup..."
             
             #cp -r "/home/$USER/Downloads" "/$backup_location/backup" #cp -r copies files recursively ie all files in a directory, files within those directories
-            
+            #^^^ this line is not used,
             tar -czvf "$backup_location/backup-$(date +%F).tar.gz" "$backup_path" 
             #tar creates archive files -c creates an archive -z uses gzip to compress -v for verbose, showing output in terminal, -f lets us specify file name
-            sleep 5
+            sleep 5 #slows program down a little bit so that it's easier to follow and understand (plus if there is an error message, you have more time to read it)
             
             
             echo "Backup completed."
